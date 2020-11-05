@@ -66,10 +66,7 @@ function verifyManifestSignature(manifest) {
     const key = Buffer.from(signed['PublicKey'], 'hex').toJSON().data
 
     key.shift()
-    if(Ed25519.verify(data, signature, key))
-        return true
-
-    return false
+    return Ed25519.verify(data, signature, key)
 }
 
 module.exports = {
