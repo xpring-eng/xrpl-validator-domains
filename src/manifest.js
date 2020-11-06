@@ -1,8 +1,6 @@
 const { encode, decode } = require('ripple-binary-codec')
 const { decodeNodePublic, encodeNodePublic } = require('ripple-address-codec')
-const elliptic = require('elliptic')
-
-const Ed25519 = elliptic.eddsa('ed25519');
+const { verify } = require('ripple-keypairs')
 
 /**
  * Parse a manifest
@@ -44,7 +42,7 @@ function parseManifest(manifest) {
  */
 function verifyManifestSignature(manifest) {
     const s = manifest['MasterSignature'] ? manifest['MasterSignature'] : manifest['Signature']
-    const signature = Buffer.from(s, 'hex').toJSON().data
+    const signature = Buffer.from(s, 'hex').toString('hex')
 
     const signed = Object.assign({}, manifest)
     delete signed['MasterSignature']
@@ -62,11 +60,10 @@ function verifyManifestSignature(manifest) {
     const signed_bytes = encode(signed)
 
     const manifestPrefix = Buffer.from("MAN\0")
-    const data = Buffer.concat([manifestPrefix, Buffer.from(signed_bytes, 'hex')]).toJSON().data
-    const key = Buffer.from(signed['PublicKey'], 'hex').toJSON().data
+    const data = Buffer.concat([manifestPrefix, Buffer.from(signed_bytes, 'hex')]).toString('hex')
+    const key = Buffer.from(signed['PublicKey'], 'hex').toString('hex')
 
-    key.shift()
-    return Ed25519.verify(data, signature, key)
+    return verify(data, signature, key)
 }
 
 module.exports = {

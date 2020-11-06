@@ -1,9 +1,7 @@
 const { parseManifest, verifyManifestSignature } = require('./manifest.js')
 const { fetchToml } = require('./network.js')
 const { decodeNodePublic } = require('ripple-address-codec');
-const elliptic = require('elliptic')
-
-const Ed25519 = elliptic.eddsa('ed25519');
+const { verify } = require('ripple-keypairs')
 
 async function verifyValidatorDomain(manifest) {
     let parsedManifest
@@ -14,13 +12,12 @@ async function verifyValidatorDomain(manifest) {
         return {
             status: "error",
             message: `Cannot Parse Manifest: ${error}`,
-            manifest: {}
         }
     }
 
     const domain = parsedManifest['Domain']
     const publicKey = parsedManifest['PublicKey']
-    const decodedPubKey = decodeNodePublic(publicKey).toJSON().data
+    const decodedPubKey = decodeNodePublic(publicKey).toString('hex')
 
     if(domain === undefined)
         return {
@@ -32,25 +29,35 @@ async function verifyValidatorDomain(manifest) {
     if(!verifyManifestSignature(parsedManifest))
         return {
             status: "error",
-            message: "Manifest Signature is invalid, cannot verify Domain",
+            message: "Manifest does not contain a domain",
             manifest: parsedManifest
         }
     
     const validatorInfo = await fetchToml(domain)
-    const message = "[domain-attestation-blob:" + domain + ":" + publicKey + "]";
-    const message_bytes = Buffer.from(message).toJSON().data
+    if(!validatorInfo.VALIDATORS)
+        return {
+            status: "error",
+            message: ".toml file does not contain VALIDATORS",
+            manifest: parsedManifest
+        }
 
-    validatorInfo.VALIDATORS.forEach(validator => {
-        const attestation = Buffer.from(validator.attestation, 'hex').toJSON().data
+
+    const message = "[domain-attestation-blob:" + domain + ":" + publicKey + "]";
+    const message_bytes = Buffer.from(message).toString('hex')
+
+    const validators = validatorInfo.VALIDATORS.filter(validator => validator.public_key === publicKey)
+
+    for (const validator of validators) {
+        const attestation = Buffer.from(validator.attestation, 'hex').toString('hex')
         
-        decodedPubKey.shift()
-        if(!Ed25519.verify(message_bytes, attestation, decodedPubKey))
+        if(!verify(message_bytes, attestation, decodedPubKey)) {
             return {
                 status: "error",
                 message: `Invalid attestation, cannot verify ${domain}`,
                 manifest: parsedManifest
             }
-    })
+        }
+    }
 
     return {
         status: "success",
@@ -60,5 +67,6 @@ async function verifyValidatorDomain(manifest) {
 }
 
 module.exports = {
-    verifyValidatorDomain
+    verifyValidatorDomain,
+    verifyManifestSignature
 }

@@ -9,14 +9,14 @@ describe("Verifies Manifest Signatures", () => {
         const pubkey = encodeNodePublic(Buffer.from(obj.validation_public_key, 'hex'))
         const manifest = Buffer.from(obj.manifest, 'base64').toString('hex')
 
-        it(`Validates ${pubkey}`, () => {
+        it(`Verifies ${pubkey}`, () => {
             expect(verifyManifestSignature(parseManifest(manifest))).to.equal(true)
         })
     })
 
     it("Does Not Verify Invaild Signature", () => {
         const manifest = parseManifest(Buffer.from(UNL[0].manifest, 'base64').toString('hex'))
-        manifest.MasterSignature = "BADA55"
+        manifest.MasterSignature = "1234567890ABCDEF"
 
         expect(verifyManifestSignature(manifest)).to.equal(false)
     })
