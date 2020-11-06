@@ -46,6 +46,12 @@ async function verifyValidatorDomain(manifest) {
     const message_bytes = Buffer.from(message).toString('hex')
 
     const validators = validatorInfo.VALIDATORS.filter(validator => validator.public_key === publicKey)
+    if(validators && validators.length === 0)
+        return {
+            status: "error",
+            message: ".toml file does not have matching public key",
+            manifest: parsedManifest
+        }
 
     for (const validator of validators) {
         const attestation = Buffer.from(validator.attestation, 'hex').toString('hex')
