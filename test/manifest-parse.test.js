@@ -1,5 +1,6 @@
 const { parseManifest, verifyManifestSignature } = require('./../src/manifest.js')
 const { UNL } = require('./fixtures/UNL-blob.js')
+const { manifests } = require('./fixtures/manifest-stream.js')
 const { encodeNodePublic } = require('ripple-address-codec')
 
 const expect = require('chai').expect
@@ -19,5 +20,13 @@ describe("Verifies Manifest Signatures", () => {
         manifest.MasterSignature = "1234567890ABCDEF"
 
         expect(verifyManifestSignature(manifest)).to.equal(false)
+    })
+})
+
+describe("Verifies Old Manifest Signatures", () => {
+    manifests.forEach( manifest => {
+        it(`Verifies ${manifest.signing_key}`, () => {
+            expect(verifyManifestSignature(manifest)).to.equal(true)
+        })
     })
 })

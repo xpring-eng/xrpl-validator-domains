@@ -19,20 +19,20 @@ async function verifyValidatorDomain(manifest) {
     const publicKey = parsedManifest['PublicKey']
     const decodedPubKey = decodeNodePublic(publicKey).toString('hex')
 
-    if(domain === undefined)
+    if(!verifyManifestSignature(parsedManifest))
         return {
             status: "error",
-            message: "Validator not configured for Decentralized Domain Verification",
+            message: "Cannot verify manifest signature",
             manifest: parsedManifest
         }
 
-    if(!verifyManifestSignature(parsedManifest))
+    if(domain === undefined)
         return {
             status: "error",
             message: "Manifest does not contain a domain",
             manifest: parsedManifest
         }
-    
+
     const validatorInfo = await fetchToml(domain)
     if(!validatorInfo.VALIDATORS)
         return {

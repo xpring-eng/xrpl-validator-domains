@@ -62,7 +62,7 @@ describe("Verifies domains", () => {
     it("no domain manifest", async () => {
         expect(await verifyValidatorDomain(noDomainStr)).to.eql({
             status: 'error',
-            message: 'Validator not configured for Decentralized Domain Verification',
+            message: 'Manifest does not contain a domain',
             manifest: noDomainParsed
         })
     })

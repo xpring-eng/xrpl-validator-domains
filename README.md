@@ -6,7 +6,7 @@ Verify validator domains in accordance with [domain verification](https://xrpl.o
 
 ## API
 ```js
-> const { verifyValidatorDomain } = require('xrpl-validator-domains')
+> const { verifyValidatorDomain, verifyManifestSignature } = require('xrpl-validator-domains')
 ```
 
 ### verifyValidatorDomain(manifest)
@@ -27,4 +27,27 @@ Parse and verify a hex-string manifest.
 }
 ```
 
+### verifyManifestSignature(manifest): bool
+Verify a manifest signature. Works on both v1 and v2 manifests
+```js
+> await verifyManifestSignature({
+  Sequence: 123,
+  Signature: '3045022100BE0B2E6071AED53C19A76BDC6EDE1A351C35343AA7CF917587F93C9D85C5A7B702207135F72654DC3AD70FE8A4DEB128965268A312DFB3E9A7C68BA8E9A8931F4285',
+  MasterSignature: 'C4FF2A6D277D24DEFB1C1EDF67285171EA02DC035FEF6216DEE41019CE41611AD4430AF59938DC505E538CCF669D521AC2A456C3805FE3CA85BB10B2A691B50B',
+  Domain: 'rabbitkick.club',
+  PublicKey: 'nHUcNC5ni7XjVYfCMe38Rm3KQaq27jw7wJpcUYdo4miWwpNePRTw',
+  SigningPubKey: 'n9Li9iXepgXECvTFq2hGoxqSttJy9rrC1NbZ75NXLZyKFekV5ZU1'
+})
+> true
+```
 
+```js
+> await verifyManifestSignature({
+  master_key: "nHBQ3CT3EWYZ4uzbnL3k6TRf9bBPhWRFVcK1F5NjtwCBksMEt5yy",
+  master_signature: "0B7C84A7F192A3CC781393876C76863AE401AEE57937A706D7FD0F1BA1C2582C07D37FC714DFA73310923518A188B25E45D9CA1D4D56C34B0CA52639D5992C03",
+  seq: 2,
+  signature: "3045022100A4622D77AF27AD6E92166D8A4BC2B8A80646757C1F4F1E33F3C4BC9344765D38022062FC193AF1555E7D1D46B6023861ECD1415B319C488DFCB99648D99060A41120",
+  signing_key: "n9K7fyu8uvmCoWvW4ZQVCWgW2zrz7sh33Ao7ceNkL7iQGDYtuwTU"
+})
+> true
+```
