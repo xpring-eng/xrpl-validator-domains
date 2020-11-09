@@ -41,8 +41,12 @@ function parseManifest(manifest) {
  * @param manifest a manifest object
  */
 function verifyManifestSignature(manifest) {
+    if(typeof manifest === "string") {
+        manifest = parseManifest(manifest)
+    }
+
     const manifestAnyVersion = Object.assign({}, {
-        Domain: manifest["Domain"],
+        Domain: manifest["Domain"] ? manifest["Domain"] : manifest["domain"],
         MasterSignature: manifest["MasterSignature"] ? manifest["MasterSignature"] : manifest["master_signature"],
         PublicKey: manifest["PublicKey"] ? manifest["PublicKey"] : manifest["master_key"],
         SigningPubKey: manifest["SigningPubKey"] ? manifest["SigningPubKey"] : manifest["signing_key"],

@@ -5,18 +5,23 @@ const { verify } = require('ripple-keypairs')
 
 async function verifyValidatorDomain(manifest) {
     let parsedManifest
-    try {
-        parsedManifest = parseManifest(manifest)
-    }
-    catch(error) {
-        return {
-            status: "error",
-            message: `Cannot Parse Manifest: ${error}`,
+    if(typeof manifest === "string") {
+        try {
+            parsedManifest = parseManifest(manifest)
+        }
+        catch(error) {
+            return {
+                status: "error",
+                message: `Cannot Parse Manifest: ${error}`,
+            }
         }
     }
+    else {
+        parsedManifest = manifest
+    }
 
-    const domain = parsedManifest['Domain']
-    const publicKey = parsedManifest['PublicKey']
+    const domain = parsedManifest['Domain'] ? parsedManifest['Domain'] : parsedManifest['domain']
+    const publicKey = parsedManifest['PublicKey'] ? parsedManifest['PublicKey'] : parsedManifest['master_key']
     const decodedPubKey = decodeNodePublic(publicKey).toString('hex')
 
     if(!verifyManifestSignature(parsedManifest))
@@ -34,10 +39,10 @@ async function verifyValidatorDomain(manifest) {
         }
 
     const validatorInfo = await fetchToml(domain)
-    if(!validatorInfo.VALIDATORS)
+    if(!validatorInfo || !validatorInfo.VALIDATORS)
         return {
             status: "error",
-            message: ".toml file does not contain VALIDATORS",
+            message: "Invalid .toml file",
             manifest: parsedManifest
         }
 

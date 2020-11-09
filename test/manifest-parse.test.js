@@ -30,3 +30,14 @@ describe("Verifies Old Manifest Signatures", () => {
         })
     })
 })
+
+describe("Verifies hex-encoded Manifest Signatures", () => {
+    UNL.forEach( obj => {
+        const pubkey = encodeNodePublic(Buffer.from(obj.validation_public_key, 'hex'))
+        const manifest = Buffer.from(obj.manifest, 'base64').toString('hex')
+
+        it(`Verifies ${pubkey}`, () => {
+            expect(verifyManifestSignature(manifest)).to.equal(true);
+        })
+    })
+})
