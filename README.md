@@ -50,6 +50,28 @@ Parse and verify a hex-string manifest. Works with hex encoded, v1, and v2 manif
 }
 ```
 
+```js
+> await verifyValidatorDomain({
+    seq: 2,
+    domain: "payid.mayurbhandary.com",
+    master_key: "nHBd6ZRXfG353vtK1kwCahqbMk6BAqUz57rVy77Do5YTBG8LHkye",
+    signing_key: "n9KqxB1nyphLfQnj8YBWtwt9ekhM58QQR3UWG3bRFKofSvBUDhXu",
+    signature: "3045022100A887F4C261786803AD033839FB52272E1123A57DFF48C07C06616D2028A4CC0502203F3325B1635864EBBFE44991910D66836F66FC00E14E965AB0F5352AD97816FF",
+    master_signature: "70AF72795E290EC997D0DDCE5180F260FD013BE75A3C57924829599D53F14CB071F090E76428BA77A43C3530CBA8BA72CF1AC59EEF9A352E9EA4B8334703EB0E"
+})
+> {
+  status: 'success',
+  message: 'payid.mayurbhandary.com has been verified',
+  manifest: {
+    seq: 2,
+    domain: "payid.mayurbhandary.com",
+    master_key: "nHBd6ZRXfG353vtK1kwCahqbMk6BAqUz57rVy77Do5YTBG8LHkye",
+    signing_key: "n9KqxB1nyphLfQnj8YBWtwt9ekhM58QQR3UWG3bRFKofSvBUDhXu",
+    signature: "3045022100A887F4C261786803AD033839FB52272E1123A57DFF48C07C06616D2028A4CC0502203F3325B1635864EBBFE44991910D66836F66FC00E14E965AB0F5352AD97816FF",
+    master_signature: "70AF72795E290EC997D0DDCE5180F260FD013BE75A3C57924829599D53F14CB071F090E76428BA77A43C3530CBA8BA72CF1AC59EEF9A352E9EA4B8334703EB0E"
+  }
+}
+```
 
 ### verifyManifestSignature(manifest): bool
 Verify a manifest signature. Works with hex encoded, v1, and v2 manifest formats.
