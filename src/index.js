@@ -20,8 +20,8 @@ async function verifyValidatorDomain(manifest) {
         parsedManifest = manifest
     }
 
-    const domain = parsedManifest['Domain'] ? parsedManifest['Domain'] : parsedManifest['domain']
-    const publicKey = parsedManifest['PublicKey'] ? parsedManifest['PublicKey'] : parsedManifest['master_key']
+    const domain = parsedManifest['Domain'] || parsedManifest['domain']
+    const publicKey = parsedManifest['PublicKey'] || parsedManifest['master_key']
     const decodedPubKey = decodeNodePublic(publicKey).toString('hex')
 
     if(!verifyManifestSignature(parsedManifest))

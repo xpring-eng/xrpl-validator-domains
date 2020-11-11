@@ -46,15 +46,15 @@ function verifyManifestSignature(manifest) {
     }
 
     const manifestAnyVersion = Object.assign({}, {
-        Domain: manifest["Domain"] ? manifest["Domain"] : manifest["domain"],
-        MasterSignature: manifest["MasterSignature"] ? manifest["MasterSignature"] : manifest["master_signature"],
-        PublicKey: manifest["PublicKey"] ? manifest["PublicKey"] : manifest["master_key"],
-        SigningPubKey: manifest["SigningPubKey"] ? manifest["SigningPubKey"] : manifest["signing_key"],
-        Sequence: manifest["Sequence"] ? manifest["Sequence"] : manifest['seq'],
-        Signature: manifest["Signature"] ? manifest["Signature"] : manifest['signature']
+        Domain: manifest["Domain"] || manifest["domain"],
+        MasterSignature: manifest["MasterSignature"] || manifest["master_signature"],
+        PublicKey: manifest["PublicKey"] || manifest["master_key"],
+        SigningPubKey: manifest["SigningPubKey"] || manifest["signing_key"],
+        Sequence: manifest["Sequence"] || manifest['seq'],
+        Signature: manifest["Signature"] || manifest['signature']
     })
 
-    const s = manifestAnyVersion['MasterSignature'] ? manifestAnyVersion['MasterSignature'] : manifestAnyVersion['Signature']
+    const s = manifestAnyVersion['MasterSignature'] || manifestAnyVersion['Signature']
     const signature = Buffer.from(s, 'hex').toString('hex')
 
     const signed = Object.assign({}, manifestAnyVersion)
