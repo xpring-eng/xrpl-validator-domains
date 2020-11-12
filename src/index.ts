@@ -9,7 +9,7 @@ interface Validator {
 }
 
 /**
- * @param manifest
+ * @param manifest Verifies the signature and domain associated with a manifest
  */
 async function verifyValidatorDomain(manifest: string | ManifestOld | ManifestNew) {
     let parsedManifest
