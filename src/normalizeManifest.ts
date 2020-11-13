@@ -63,6 +63,26 @@ export function isManifestParsed(param: any): param is ManifestParsed {
       && (param.Signature === undefined || typeof param.Signature === 'string'))
 }
 
+
+/**
+ * @param manifest tests if a parameter is a Manifest in ManifestRPC format
+ */
+export function isManifestRPC(param: any): param is ManifestRPC {
+    if(typeof param !== "object")
+      return false
+
+    const expected_keys = ["seq", "master_key", "master_signature", "domain", "signing_key", "signature", "type"]
+    const extra_keys = Object.keys(param).filter(key => !expected_keys.includes(key))
+
+    return (extra_keys.length === 0
+      && typeof param.seq === "number"
+      && typeof param.master_key === "string"
+      && typeof param.master_signature === "string"
+      && (param.domain === undefined || typeof param.domain === 'string')
+      && (param.signing_key === undefined || typeof param.signing_key === 'string')
+      && (param.signature === undefined || typeof param.signature === 'string'))
+}
+
 /**
  * Parse a manifest
  *
@@ -96,25 +116,6 @@ function manifestFromHex(manifest: string): ManifestParsed {
         result['SigningPubKey'] = encodeNodePublic(Buffer.from(parsed['SigningPubKey'], 'hex'))
 
     return result
-}
-
-/**
- * @param manifest tests if a parameter is a Manifest in ManifestRPC format
- */
-export function isManifestRPC(param: any): param is ManifestRPC {
-    if(typeof param !== "object")
-      return false
-
-    const expected_keys = ["seq", "master_key", "master_signature", "domain", "signing_key", "signature", "type"]
-    const extra_keys = Object.keys(param).filter(key => !expected_keys.includes(key))
-
-    return (extra_keys.length === 0
-      && typeof param.seq === "number"
-      && typeof param.master_key === "string"
-      && typeof param.master_signature === "string"
-      && (param.domain === undefined || typeof param.domain === 'string')
-      && (param.signing_key === undefined || typeof param.signing_key === 'string')
-      && (param.signature === undefined || typeof param.signature === 'string'))
 }
 
 /**
