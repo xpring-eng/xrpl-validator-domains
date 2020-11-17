@@ -28,7 +28,7 @@ export interface ManifestRPC {
     signature?: string
 }
 
-export function isNormalizedManifest(param: any): param is Manifest {
+export function isManifest(param: any): param is Manifest {
     if(typeof param !== "object")
       return false
 
@@ -124,7 +124,7 @@ function manifestFromHex(manifest: string): ManifestParsed {
  * @param binary hex-string of an encoded manifest
  */
 function normalizeManifest(manifest: string | ManifestParsed | ManifestRPC | Manifest ): Manifest {
-    if(isNormalizedManifest(manifest))
+    if(isManifest(manifest))
         return manifest
 
     let parsed;
