@@ -11,7 +11,8 @@ interface Validator {
 }
 
 /**
- * @param manifest Verifies the signature and domain associated with a manifest
+ * Verifies the signature and domain associated with a manifest
+ * @param manifest - The signed manifest that contains the validator's domain
  */
 async function verifyValidatorDomain(manifest: string | ManifestParsed | ManifestRPC) {
     let normalizedManifest = normalizeManifest(manifest)

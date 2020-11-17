@@ -8,6 +8,7 @@ interface Response {
 }
 
 /**
+ * Fetch .toml file from manifest domain
  * @param domain to fetch the .toml file from
  */
 async function fetchToml(domain: string) {

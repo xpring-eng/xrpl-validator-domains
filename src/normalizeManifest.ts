@@ -28,6 +28,9 @@ export interface ManifestRPC {
     signature?: string
 }
 
+/**
+ * Check that the parameter is a valid Manifest object.
+ */
 export function isManifest(param: any): param is Manifest {
     if(typeof param !== "object")
       return false
@@ -45,7 +48,7 @@ export function isManifest(param: any): param is Manifest {
 }
 
 /**
- * @param param tests if a parameter is a Manifest in ManifestParsed format
+ * Check that the parameter is a valid ManifestParsed object.
  */
 export function isManifestParsed(param: any): param is ManifestParsed {
     if(typeof param !== "object")
@@ -63,9 +66,8 @@ export function isManifestParsed(param: any): param is ManifestParsed {
       && (param.Signature === undefined || typeof param.Signature === 'string'))
 }
 
-
 /**
- * @param manifest tests if a parameter is a Manifest in ManifestRPC format
+ * Check that the parameter is a valid ManifestRPC object.
  */
 export function isManifestRPC(param: any): param is ManifestRPC {
     if(typeof param !== "object")
@@ -84,9 +86,8 @@ export function isManifestRPC(param: any): param is ManifestRPC {
 }
 
 /**
- * Parse a manifest
- *
- * @param binary hex-string of an encoded manifest
+ * Parses a hex-string encoded manifest
+ * @param binary hex-string representing a manifest
  */
 function manifestFromHex(manifest: string): ManifestParsed {
     let parsed;
@@ -119,9 +120,8 @@ function manifestFromHex(manifest: string): ManifestParsed {
 }
 
 /**
- * Parse a manifest
- *
- * @param binary hex-string of an encoded manifest
+ * Normalizes a manifest to a Manifest object
+ * @param binary hex-string, ManifestRPC, or ManifestParsed representation of a manifest
  */
 function normalizeManifest(manifest: string | ManifestParsed | ManifestRPC | Manifest ): Manifest {
     if(isManifest(manifest))
