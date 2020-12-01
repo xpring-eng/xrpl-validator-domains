@@ -2,11 +2,12 @@
   "name": "xrpl-validator-domains",
   "version": "0.1.0",
   "description": "Decentralized domain verification for the XRP Ledger",
-  "main": "index.ts",
+  "main": "build/",
   "author": "Nathan Nichols",
   "type": "commonjs",
   "license": "MIT",
   "scripts": {
+    "prepare": "yarn build",
     "test": "nyc mocha -r ts-node/register test/*.test.ts",
     "lint": "eslint . --ext .js --max-warnings 0",
     "build": "yarn lint && tsc --build tsconfig.build.json"
