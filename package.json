@@ -9,7 +9,7 @@
   "scripts": {
     "prepare": "yarn lint && yarn build",
     "test": "nyc mocha -r ts-node/register test/*.test.ts",
-    "lint": "eslint . --ext .ts --max-warnings 0",
+    "lint": "eslint . --ext .ts --max-warnings 0 && eslint .eslintrc.js --max-warnings 0",
     "build": "tsc --build tsconfig.build.json"
   },
   "dependencies": {
