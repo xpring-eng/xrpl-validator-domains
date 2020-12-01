@@ -113,7 +113,7 @@ describe('Verifies domains', () => {
       .reply(200, rabbitKickResponse.response)
 
     expect(await verifyValidatorDomain(rabbitKickManifiest)).to.eql({
-      status: 'success',
+      verified: true,
       message: 'rabbitkick.club has been verified',
       manifest: rabbitKickManifestResponse,
     })
@@ -123,7 +123,7 @@ describe('Verifies domains', () => {
       .reply(200, rabbitKickResponse.response)
 
     expect(await verifyValidatorDomain(rabbitKickParsed)).to.eql({
-      status: 'success',
+      verified: true,
       message: 'rabbitkick.club has been verified',
       manifest: rabbitKickManifestResponse,
     })
@@ -133,7 +133,7 @@ describe('Verifies domains', () => {
       .reply(200, rabbitKickResponse.response)
 
     expect(await verifyValidatorDomain(rabbitKickRpcResponse)).to.eql({
-      status: 'success',
+      verified: true,
       message: 'rabbitkick.club has been verified',
       manifest: rabbitKickManifestResponse,
     })
@@ -145,7 +145,7 @@ describe('Verifies domains', () => {
       .reply(200, payIdMayurResponse.response)
 
     expect(await verifyValidatorDomain(mayursManifest)).to.eql({
-      status: 'success',
+      verified: true,
       message: 'payid.mayurbhandary.com has been verified',
       manifest: mayursManifestResponse,
     })
@@ -155,7 +155,7 @@ describe('Verifies domains', () => {
       .reply(200, payIdMayurResponse.response)
 
     expect(await verifyValidatorDomain(mayursParsed)).to.eql({
-      status: 'success',
+      verified: true,
       message: 'payid.mayurbhandary.com has been verified',
       manifest: mayursManifestResponse,
     })
@@ -164,7 +164,7 @@ describe('Verifies domains', () => {
       .reply(200, payIdMayurResponse.response)
 
     expect(await verifyValidatorDomain(mayursRpcResponse)).to.eql({
-      status: 'success',
+      verified: true,
       message: 'payid.mayurbhandary.com has been verified',
       manifest: mayursManifestResponse,
     })
@@ -172,19 +172,19 @@ describe('Verifies domains', () => {
 
   it('no domain manifest', async () => {
     expect(await verifyValidatorDomain(noDomainStr)).to.eql({
-      status: 'error',
+      verified: false,
       message: 'Manifest does not contain a domain',
       manifest: noDomainResponseManifest,
     })
 
     expect(await verifyValidatorDomain(noDomainParsed)).to.eql({
-      status: 'error',
+      verified: false,
       message: 'Manifest does not contain a domain',
       manifest: noDomainResponseManifest,
     })
 
     expect(await verifyValidatorDomain(noDomainRpcResponse)).to.eql({
-      status: 'error',
+      verified: false,
       message: 'Manifest does not contain a domain',
       manifest: noDomainResponseManifest,
     })
@@ -196,7 +196,7 @@ describe('Verifies domains', () => {
       MasterSignature: '11223344556677889900aabbccddeeff',
     }
     expect(await verifyValidatorDomain(invalid)).to.eql({
-      status: 'error',
+      verified: false,
       message: 'Cannot verify manifest signature',
       manifest: {
         domain: 'rabbitkick.club',
@@ -216,7 +216,7 @@ describe('Verifies domains', () => {
       .reply(200, invalidToml.response)
 
     expect(await verifyValidatorDomain(mayursManifest)).to.eql({
-      status: 'error',
+      verified: false,
       message: 'Invalid .toml file',
       manifest: mayursManifestResponse,
     })
@@ -228,7 +228,7 @@ describe('Verifies domains', () => {
       .reply(200, noKey.response)
 
     expect(await verifyValidatorDomain(mayursManifest)).to.eql({
-      status: 'error',
+      verified: false,
       message: '.toml file does not have matching public key',
       manifest: mayursManifestResponse,
     })
@@ -240,7 +240,7 @@ describe('Verifies domains', () => {
       .reply(200, invalidAttestation.response)
 
     expect(await verifyValidatorDomain(mayursManifest)).to.eql({
-      status: 'error',
+      verified: false,
       message: 'Invalid attestation, cannot verify payid.mayurbhandary.com',
       manifest: mayursManifestResponse,
     })

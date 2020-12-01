@@ -19,12 +19,12 @@ interface Validator {
  * Verifies the signature and domain associated with a manifest.
  *
  * @param manifest - The signed manifest that contains the validator's domain.
- * @returns A status, message, and the verified manifest.
+ * @returns A verified, message, and the verified manifest.
  */
 async function verifyValidatorDomain(
   manifest: string | ManifestParsed | ManifestRPC,
 ): Promise<{
-  status: string
+  verified: boolean
   message: string
   manifest?: Manifest
 }> {
@@ -36,7 +36,7 @@ async function verifyValidatorDomain(
 
   if (!verifyManifestSignature(normalizedManifest)) {
     return {
-      status: 'error',
+      verified: false,
       message: 'Cannot verify manifest signature',
       manifest: normalizedManifest,
     }
@@ -44,7 +44,7 @@ async function verifyValidatorDomain(
 
   if (domain === undefined) {
     return {
-      status: 'error',
+      verified: false,
       message: 'Manifest does not contain a domain',
       manifest: normalizedManifest,
     }
@@ -53,7 +53,7 @@ async function verifyValidatorDomain(
   const validatorInfo = await fetchToml(domain)
   if (!validatorInfo.VALIDATORS) {
     return {
-      status: 'error',
+      verified: false,
       message: 'Invalid .toml file',
       manifest: normalizedManifest,
     }
@@ -67,7 +67,7 @@ async function verifyValidatorDomain(
   )
   if (validators.length === 0) {
     return {
-      status: 'error',
+      verified: false,
       message: '.toml file does not have matching public key',
       manifest: normalizedManifest,
     }
@@ -79,7 +79,7 @@ async function verifyValidatorDomain(
     )
 
     const failedToVerify = {
-      status: 'error',
+      verified: false,
       message: `Invalid attestation, cannot verify ${domain}`,
       manifest: normalizedManifest,
     }
@@ -97,7 +97,7 @@ async function verifyValidatorDomain(
   }
 
   return {
-    status: 'success',
+    verified: true,
     message: `${domain} has been verified`,
     manifest: normalizedManifest,
   }
