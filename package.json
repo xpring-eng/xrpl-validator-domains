@@ -7,10 +7,10 @@
   "type": "commonjs",
   "license": "MIT",
   "scripts": {
-    "prepare": "yarn build",
+    "prepare": "yarn lint && yarn build",
     "test": "nyc mocha -r ts-node/register test/*.test.ts",
     "lint": "eslint . --ext .ts --max-warnings 0",
-    "build": "yarn lint && tsc --build tsconfig.build.json"
+    "build": "tsc --build tsconfig.build.json"
   },
   "dependencies": {
     "axios": "^0.21.0",

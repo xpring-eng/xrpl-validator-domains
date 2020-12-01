@@ -103,3 +103,9 @@ Verify a manifest signature. Works with the following manifest formats.
 })
 > true
 ```
+
+#### Testing
+After installing, run
+```
+  yarn test
+```
