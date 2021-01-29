@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import { decodeNodePublic } from 'ripple-address-codec'
 import { verify } from 'ripple-keypairs'
 
@@ -22,6 +21,7 @@ interface Validator {
  * @param manifest - The signed manifest that contains the validator's domain.
  * @returns A verified, message, and the verified manifest.
  */
+// eslint-disable-next-line max-lines-per-function -- Necessary use of extra lines.
 async function verifyValidatorDomain(
   manifest: string | ManifestParsed | StreamManifest,
 ): Promise<{
