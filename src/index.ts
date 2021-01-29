@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { decodeNodePublic } from 'ripple-address-codec'
 import { verify } from 'ripple-keypairs'
 
@@ -25,6 +26,7 @@ async function verifyValidatorDomain(
   manifest: string | ManifestParsed | StreamManifest,
 ): Promise<{
   verified: boolean
+  verified_manifest_signature: boolean
   message: string
   manifest?: Manifest
 }> {
@@ -37,6 +39,7 @@ async function verifyValidatorDomain(
   if (!verifyManifestSignature(normalizedManifest)) {
     return {
       verified: false,
+      verified_manifest_signature: false,
       message: 'Cannot verify manifest signature',
       manifest: normalizedManifest,
     }
@@ -45,6 +48,7 @@ async function verifyValidatorDomain(
   if (domain === undefined) {
     return {
       verified: false,
+      verified_manifest_signature: true,
       message: 'Manifest does not contain a domain',
       manifest: normalizedManifest,
     }
@@ -54,6 +58,7 @@ async function verifyValidatorDomain(
   if (!validatorInfo.VALIDATORS) {
     return {
       verified: false,
+      verified_manifest_signature: true,
       message: 'Invalid .toml file',
       manifest: normalizedManifest,
     }
@@ -68,6 +73,7 @@ async function verifyValidatorDomain(
   if (validators.length === 0) {
     return {
       verified: false,
+      verified_manifest_signature: true,
       message: '.toml file does not have matching public key',
       manifest: normalizedManifest,
     }
@@ -80,6 +86,7 @@ async function verifyValidatorDomain(
 
     const failedToVerify = {
       verified: false,
+      verified_manifest_signature: true,
       message: `Invalid attestation, cannot verify ${domain}`,
       manifest: normalizedManifest,
     }
@@ -98,6 +105,7 @@ async function verifyValidatorDomain(
 
   return {
     verified: true,
+    verified_manifest_signature: true,
     message: `${domain} has been verified`,
     manifest: normalizedManifest,
   }
