@@ -23,7 +23,7 @@ interface Validator {
  */
 // eslint-disable-next-line max-lines-per-function -- Necessary use of extra lines.
 async function verifyValidatorDomain(
-  manifest: string | ManifestParsed | StreamManifest,
+  manifest: string | ManifestParsed | StreamManifest | Manifest,
 ): Promise<{
   verified: boolean
   verified_manifest_signature: boolean
