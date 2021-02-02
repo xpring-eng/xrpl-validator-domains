@@ -10,7 +10,7 @@ There are three main pieces of functionality in this library.
 
 ### normalizeManifest()
 
-`normalizeManifest()` is a helper function defined to take a manifest of any of three standard formats and normalize it into one manifest format. It does this with by defining type guards for each manifest type:
+`normalizeManifest()` is a helper function that takes a manifest of any of three standard formats and normalizes it into one manifest format. It does this with by defining type guards for each manifest type:
 
 ```ts
 export interface Manifest {
@@ -50,14 +50,14 @@ export interface ManifestParsed {
 
 ### verifyManifestSignature()
 
-`verifyManifestSignature` is straightforward. It takes a Manifest object and verifies its signature.
+`verifyManifestSignature` takes a Manifest object and verifies its signature.
 
-The function will save the `master_signature`. If the `master_signature` is not present, the `signature` is use instead. Then, the signatures are `delete`ed from the Manifest, and the manifest is hex-encoded using `ripple-binary-codec`. `ripple-keypairs` is used to verify the signature, and `verifyManifestSignature()` returns `true` if the signature is valid, and `false` if it is not.
+The function uses the `master_signature` field. If the `master_signature` is not present `signature` is used instead. Then, the signatures are `delete`ed from the Manifest, and the manifest is hex-encoded using `ripple-binary-codec`. The signature is verified using `ripple-keypairs`, and `verifyManifestSignature()` returns `true` if the signature is valid, and `false` if it is not.
 
 
 ### verifyValidatorDomain()
 
-`verifyValidatorDomain()` is used to verify that a validator and the domain it uses have the same operator. Verification is done in four steps:
+`verifyValidatorDomain()` verifies that a validator and the domain it uses have the same operator. Verification is done in four steps:
 
 1. Normalize the manifest. Uses `normalizeManifest()` as described above.
    
@@ -72,4 +72,4 @@ Before being considered for review or merging, each pull request must:
 
 - Pass GitHub continuous integration tests. `yarn test` runs all unit tests.
 - Update documentation for any new features.
-- Be free of lint errors. Please run `yarn lint` and fix any errors before sending a pull request.
+- Be free of lint errors. Please run `yarn lint` and fix any errors before creating a pull request.
