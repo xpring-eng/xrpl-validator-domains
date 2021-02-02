@@ -16,7 +16,7 @@
     "lint": "eslint . --ext .ts --max-warnings 0 && eslint .eslintrc.js --max-warnings 0"
   },
   "dependencies": {
-    "axios": "0.21.1",
+    "axios": "^0.21.1",
     "ripple-address-codec": "^4.1.1",
     "ripple-binary-codec": "^1.0.2",
     "ripple-keypairs": "^1.0.2",
